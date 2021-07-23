@@ -1,2 +1,2 @@
-# Telegram-Bot
-An Interface to a Telegram Bot to send and recieve messages from.
+# Telegram-Utils
+An Interface to a Telegram Bot to send and receive messages from.
