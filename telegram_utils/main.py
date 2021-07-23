@@ -60,7 +60,7 @@ class TelegramBot:
                   Bot will then stop listening for messages.
                 - Should return False if message was invalid. The Bot will
                   keep listening for messages.
-                - `f` will return the last received message.
+                - `f` will return the last received message from each Client.
 
         Returns:
             The decorated function.
@@ -90,7 +90,9 @@ class TelegramBot:
 
             updater.start_polling(timeout=1)
             updater.idle([signal.SIGTERM])
-            return dispatcher.chat_data
+
+            return {key: value["msg"] for key, value
+                    in dispatcher.chat_data.items()}
 
         return wrapper
 
