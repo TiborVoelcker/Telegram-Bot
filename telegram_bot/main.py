@@ -1,6 +1,4 @@
 import logging
-import os
-import pickle
 import signal
 from collections.abc import Iterable
 from pathlib import Path
@@ -8,68 +6,16 @@ from random import randint
 from typing import Union, Callable
 
 import telegram
+from config import Config
+from errors import NoTokenError, NoClientIdsError
 from telegram.ext import Updater, MessageHandler, Filters
-
-basedir = Path(__file__).parent
-
-
-class ConfigError(Exception):
-    """Raised when invalid configuration file."""
-    pass
-
-
-class NoTokenError(ConfigError):
-    """Raised when no token was found."""
-    pass
-
-
-class NoClientIdsError(ConfigError):
-    """Raised when no Client IDs were found."""
-    pass
-
-
-class Config:
-    def __init__(
-            self,
-            filepath: Union[Path, str] = basedir / "telegram_config.pickle"
-    ) -> None:
-        """Configuration class for a telegram bot class.
-
-        Args:
-            filepath: Filepath to configuration pickle file.
-
-        Raises:
-            ConfigError: If config file could not be read.
-        """
-        self.filepath = Path(filepath)
-        try:
-            with open(self.filepath, "rb") as f:
-                config = pickle.load(f)
-            self.token = config.get("token")
-            self.client_ids = config.get("client_ids")
-        except FileNotFoundError:
-            self.token = None
-            self.client_ids = dict()
-        except pickle.UnpicklingError as e:
-            raise ConfigError("Invalid configuration file!") from e
-
-    def write_config(self) -> None:
-        """Write token and client_ids to config file."""
-        config = {"token": self.token, "client_ids": self.client_ids}
-        try:
-            with open(self.filepath, "wb") as f:
-                pickle.dump(config, f)
-        except FileNotFoundError:
-            os.makedirs(self.filepath.parent)
-            with open(self.filepath, "wb") as f:
-                pickle.dump(config, f)
 
 
 class TelegramBot:
     def __init__(self, config_filepath: Union[Path, str] = None) -> None:
         """Class to handle Telegram Bot operations.
 
-        Before sending or recieving messages, you need to first add a token
+        Before sending or receiving messages, you need to first add a token
         with `set_bot_token` and then add clients with `add_client`.
 
         Args:
@@ -223,5 +169,3 @@ class TelegramHandler(logging.StreamHandler):
 
 if __name__ == '__main__':
     b = TelegramBot()
-    b.set_bot_token("1880935920:AAFW9hVOh2kzzcEpBf7ad7g-gnCBy_e6HLM")
-    b.add_client()
