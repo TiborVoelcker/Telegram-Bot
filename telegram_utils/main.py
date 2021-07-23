@@ -147,17 +147,17 @@ class TelegramBot:
                 chat_id=chat_id, text=message, parse_mode=parse_mode)
 
 
-class TelegramHandler(logging.StreamHandler):
+class TelegramHandler(logging.StreamHandler, TelegramBot):
     def __init__(
             self, config_filepath: Union[Path, str] = None, *args, **kwargs):
         """A Handler which sends all message via a Telegram Bot."""
-        super().__init__(*args, **kwargs)
-        self.bot = TelegramBot(config_filepath=config_filepath)
+        logging.StreamHandler.__init__(self, *args, **kwargs)
+        TelegramBot.__init__(self, config_filepath=config_filepath)
 
     def emit(self, record):
         """Sends a message."""
         msg = self.format(record)
-        self.bot.send_message(msg)
+        self.send_message(msg)
 
 
 if __name__ == '__main__':
