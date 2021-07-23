@@ -161,4 +161,24 @@ class TelegramHandler(logging.StreamHandler, TelegramBot):
 
 
 if __name__ == '__main__':
-    b = TelegramBot()
+    bot = TelegramBot()
+    # bot.set_bot_token()
+    # bot.register_client()
+
+    bot.send_message("Hello <strong><em>you!</em></strong>&#128522;",
+                     parse_mode=telegram.ParseMode.HTML)
+
+    @bot.get_message
+    def get_greeting(msg, greeting):
+        if msg.text == greeting:
+            return True
+        else:
+            return False
+
+    hello = "Hallo!"
+    print(get_greeting(hello))
+
+    logger = logging.getLogger()
+    th = TelegramHandler()
+    logger.addHandler(th)
+    logger.warning("Let's test the TelegramHandler!")
