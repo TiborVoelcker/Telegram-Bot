@@ -38,7 +38,7 @@ class TelegramBot:
             "Please enter your Telegram Bot token: ")
         self.config.write_config()
 
-    def add_client(self, client: dict = None) -> None:
+    def add_client(self, client: dict) -> None:
         """Add a client to send messages to or get messages from.
 
         Args:
@@ -46,12 +46,8 @@ class TelegramBot:
                 {<client_id>: <client_name>}.
                 Can also add multiple clients at once.
         """
-        if client:
-            self.config.client_ids.update(client)
-            self.config.write_config()
-
-        else:
-            self.__register_client()
+        self.config.client_ids.update(client)
+        self.config.write_config()
 
     def get_message(self, f: Callable) -> Callable:
         """Decorator to listen for messages.
@@ -103,7 +99,7 @@ class TelegramBot:
 
         return wrapper
 
-    def __register_client(self) -> None:
+    def register_client(self) -> None:
         """Registers a new client.
 
         You will be asked to send a password shown in the command line to the
