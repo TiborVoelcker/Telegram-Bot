@@ -68,17 +68,12 @@ class TelegramBot:
         if not self.config.token:
             raise NoTokenError(
                 "No Token found! Use `set_bot_token` to add a token first.")
-        if not self.config.client_ids:
-            raise NoClientIdsError(
-                "No Token found! Use `add_client` to add a clients first.")
 
         def wrapper(*args, **kwargs):
             updater = Updater(token=self.config.token)
             dispatcher = updater.dispatcher
 
             def handle_msg(update, context):
-                if update.message.chat.id not in self.config.client_ids:
-                    return False
                 context.chat_data.update(msg=update.message.text)
                 res = f(update.message, *args, **kwargs)
                 if res is False:
