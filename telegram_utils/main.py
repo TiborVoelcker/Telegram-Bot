@@ -6,8 +6,8 @@ from random import randint
 from typing import Union, Callable
 
 import telegram
-from config import Config
-from errors import NoTokenError, NoClientIdsError
+from telegram_utils.config import Config
+from telegram_utils.errors import NoTokenError, NoClientIdsError
 from telegram.ext import Updater, MessageHandler, Filters
 
 
