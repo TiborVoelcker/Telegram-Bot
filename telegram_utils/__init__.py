@@ -1,1 +1,1 @@
-from main import TelegramBot, TelegramHandler
+from telegram_utils.main import TelegramBot, TelegramHandler
