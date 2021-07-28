@@ -3,7 +3,7 @@ import pickle
 from pathlib import Path
 from typing import Union
 
-from errors import ConfigError
+from telegram_utils.errors import ConfigError
 
 basedir = Path(__file__).parent
 
